@@ -1,12 +1,31 @@
 import requests
-from test_case.login_test import LoginTest
+#from test_case.login_test import LoginTest
 
 
-class my_session():
 
-    def get_session(self):
-        '''get session id after login successfully'''
-        r = requests.post(url='http://120.234.18.2:56109/hes/dologin',
-                          data={'username': '001', 'password': 123456, 'url': '', 'locale': 'en_US'})
-        print(r.cookies.get_dict())
-        return r.cookies.get_dict()
+def get_session():
+
+    s = requests.session()
+
+    #headers = {
+    #   "X-Requested-With": "XMLHttpRequest",
+        # "Content-Type":"application/x-www-form-urlencoded",
+    #}
+
+    url_login="http://120.234.18.2:56109/hes/dologin"
+
+    login_data = {
+        'username': 'PQ001',
+        'password': 12345678,
+        'url': '',
+        'locale': 'en_US'
+    }
+
+
+    '''302 response need to add allow_redirect=False to forbid redirect'''
+    cookie = s.post(url_login, data=login_data, allow_redirects=False).cookies
+    return cookie
+
+
+if __name__=='__main__':
+    get_session()
